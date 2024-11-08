@@ -26,10 +26,10 @@
             maxZoom: 19,
         }).addTo(map);
 
-        fetch('data.geojson')
+        fetch('dati.geojson')
             .then(response => response.json())
             .then(data => {
-                console.log("Loaded GeoJSON data:", data);  // Проверяем, загружается ли GeoJSON
+                console.log("Loaded GeoJSON data:", data);  
                 L.geoJSON(data, {
                     pointToLayer: function(feature, latlng) {
                         return L.marker(latlng);
