@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet Map with GeoJSON Markers</title>
+    <title>Leaflet Fullscreen Map with GeoJSON Markers</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
-    <div id="map" style="height: 600px;"></div>
+    <div id="map"></div>
 
     <script>
         var map = L.map('map').setView([56.95, 24.1], 10);
