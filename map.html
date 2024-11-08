@@ -29,6 +29,7 @@
         fetch('data.geojson')
             .then(response => response.json())
             .then(data => {
+                console.log("Loaded GeoJSON data:", data);  // Проверяем, загружается ли GeoJSON
                 L.geoJSON(data, {
                     pointToLayer: function(feature, latlng) {
                         return L.marker(latlng);
