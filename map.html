@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet Map</title>
+    <title>Leaflet Map with GeoJSON and Coordinate Conversion</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         html, body {
@@ -15,6 +15,7 @@
         }
     </style>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="LKS92WGS84.js"></script> <!-- Подключаем файл с функцией перевода -->
 </head>
 <body>
     <div id="map"></div>
@@ -29,7 +30,15 @@
         fetch('dati.geojson')
             .then(response => response.json())
             .then(data => {
-                console.log("Loaded GeoJSON data:", data);  
+                
+                data.features.forEach(feature => {
+                    if (feature.geometry.type === "Point") {
+                        var lks92Coords = feature.geometry.coordinates;
+                        var wgs84Coords = LKS92WGS84.convertXYToLatLon(lks92Coords);
+                        feature.geometry.coordinates = [wgs84Coords[1], wgs84Coords[0]]; 
+                    }
+                });
+
                 L.geoJSON(data, {
                     pointToLayer: function(feature, latlng) {
                         return L.marker(latlng);
@@ -41,7 +50,7 @@
                     }
                 }).addTo(map);
             })
-            .catch(error => console.error('GeoJSON loading error:', error));
+            .catch(error => console.error('GeoJSON loading or conversion error:', error));
     </script>
 </body>
 </html>
