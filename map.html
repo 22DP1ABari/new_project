@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet Map</title>
+    <title>Leaflet Map with GeoJSON and Coordinate Conversion</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         html, body {
@@ -37,14 +37,21 @@
                         if (wgs84Coords) {
                             feature.geometry.coordinates = [wgs84Coords[1], wgs84Coords[0]];
                         } else {
-                            console.error("Error ", feature);
+                            console.error("Error converting coordinates for: ", feature);
                         }
                     }
                 });
 
+                var arrowIcon = L.icon({
+                    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/68/Arrow_icon.svg',
+                    iconSize: [30, 30], 
+                    iconAnchor: [15, 15], 
+                    popupAnchor: [0, -15]
+                });
+
                 L.geoJSON(data, {
                     pointToLayer: function(feature, latlng) {
-                        return L.marker(latlng);
+                        return L.marker(latlng, { icon: arrowIcon });
                     },
                     onEachFeature: function(feature, layer) {
                         if (feature.properties && feature.properties.name) {
@@ -53,7 +60,7 @@
                     }
                 }).addTo(map);
             })
-            .catch(error => console.error('Loading error', error));
+            .catch(error => console.error('Error loading GeoJSON or converting coordinates:', error));
     </script>
 </body>
 </html>
