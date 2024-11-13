@@ -40,19 +40,16 @@
                         var lks92Coords = feature.geometry.coordinates;
                         var wgs84Coords = LKS92WGS84.convertXYToLatLon(lks92Coords);
                         feature.geometry.coordinates = [wgs84Coords[1], wgs84Coords[0]];
-                    }
-                });
 
-                L.geoJSON(data, {
-                    pointToLayer: function(feature, latlng) {
-                        return L.marker(latlng);
-                    },
-                    onEachFeature: function(feature, layer) {
+                        var marker = L.marker([wgs84Coords[1], wgs84Coords[0]]).addTo(map);
+
                         if (feature.properties && feature.properties.name) {
-                            layer.bindPopup(feature.properties.name);
+                            marker.bindPopup(feature.properties.name);
+                        } else {
+                            marker.bindPopup("Information unavailable");
                         }
                     }
-                }).addTo(map);
+                });
             })
             .catch(error => console.error('GeoJSON loading or conversion error:', error));
     </script>
